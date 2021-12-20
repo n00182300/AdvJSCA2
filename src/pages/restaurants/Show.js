@@ -1,10 +1,11 @@
 import { useParams } from 'react-router-dom'
 import axios from '../../config'
 import { useEffect, useState } from 'react'
-import { Button } from '@mui/material';
 import { Link } from 'react-router-dom'
 // import CommentList from '../../components/CommentList'
 import { List, ListItemText, Typography, ListItem, TextField } from '@mui/material'
+import { Card, Button, CardHeader, CardContent } from '@mui/material';
+import { Grid, Container } from "@mui/material"
 
 const Show = () => {
     let { id } = useParams()
@@ -20,15 +21,15 @@ const Show = () => {
                 "Authorization": `Bearer ${token}`
             }
         })
-             .then(response => {
+            .then(response => {
                 console.log(response.data)
                 setRestaurant(response.data)
                 setComments(response.data.restaurant.comments)
                 console.log(response.data.restaurant.comments)
-             })
-             .catch(err => {
+            })
+            .catch(err => {
                 console.log(`Error: ${err}`)
-             })
+            })
     }, [id, token])
 
     //Create Comment
@@ -63,13 +64,13 @@ const Show = () => {
     }
     if (!restaurant) return null
     if (!comments) return null
-  
-//comment compo. deals with everything that has to deal with most things with comments
-const Comment = (props) => {
-  return(
-<ListItem>
-<ListItemText
-primary={props.comment.name}
+
+    //comment compo. deals with everything that has to deal with most things with comments
+    const Comment = (props) => {
+        return (
+            <ListItem>
+                <ListItemText
+                    primary={props.comment.name}
                     secondary={
                         <>
                             <Typography
@@ -82,71 +83,70 @@ primary={props.comment.name}
                             </Typography>
                             <br />
                             {props.comment.date}
+
+                            <Link
+                                to={`/comments/${props.comment._id}/edit`}
+                                style={{ color: 'inherit', textDecoration: 'inherit' }}
+                            >
+                                <Button>
+                                    Edit comment
+                                </Button>
+                            </Link>
                         </>
                     }
-/>
-</ListItem>
-  )
-}
+                />
+            </ListItem>
+        )
+    }
 
 
 
-    
+
     return (
-      <div>
-        <h2>This is the restaurants show page: {id}</h2>
+        <div>
+            <Container >
+                <h2>This is the restaurants show page: {id}</h2>
 
-        <p><b>Name: </b> {restaurant.restaurant.name} </p>
-        <p><b>Cuisine: </b> {restaurant.restaurant.cuisine} </p>
-        <p><b>Comments:</b></p>
-        <p><b>User:</b>{restaurant.restaurant.comments[0].name}</p>
-        {/* <p><b>Comments:</b>{restaurant.restaurant.comments[0].text}</p>
-        <p><b>Comments:</b>{restaurant.restaurant.comments[0].date}</p> */}
+                <Card>
+                    <CardHeader title={restaurant.restaurant.name} />
+                    <CardContent>
+                        <p><b>Cruisine: </b> {restaurant.restaurant.cuisine}</p>
+                        <p><b>Building: </b> {restaurant.restaurant.address.building}</p>
+                        <p><b>Street: </b> {restaurant.restaurant.address.street}</p>
+                        <p><b>Borough: </b> {restaurant.restaurant.borough}</p>
+                        <p><b>Zipcode: </b> {restaurant.restaurant.address.zipcode}</p>
+                        <p><b>Grades: </b> {restaurant.restaurant.grades[0].grade} , ({restaurant.restaurant.grades[0].date}) , ({restaurant.restaurant.grades[0].score})</p>
+                    </CardContent>
+                </Card>
 
-        {comments.map((comment) => {
-             return(
-             <div key ={comment._id}>
-        <p>{comment.name}</p>
-        <p>{comment.text}</p>
-        <p>{comment.date}</p>
-        <Link to="cc" >Edit</Link>
-        {/* <button style={btnStyles} onClick={submitForm}>Submit</button> */}
+                <List>
+                    {comments.map((comment) => {
+                        return (
+                            <Comment restraurantId={restaurant._id} key={comment._id} comment={comment} />
+
+                        );
+                    })}
+                </List>
+
+                <TextField
+                    placeholder="Add Comment"
+                    type="text"
+                    name="comment"
+                    value={form.comment}
+                    onChange={handleForm} />
+                <Button
+                    variant="contained"
+                    onClick={submitForm}
+                >
+                    ADD
+                </Button>
+
+            </Container>
         </div>
-      )
-    })}
-    {/* <CommentList /> */}
-      
-        
-        <Link to="cc" >Edit</Link>
 
-        <List>
-                                        {comments
-                                            .map((comment) => {
-                                                return (
-                                                    <Comment key={comment._id} comment={comment} />
-                                                );
-                                            })}
-        </List>
-
-        <TextField
-                                                    placeholder="Add Comment"
-                                        type="text"
-                                        name="comment"
-                                        value={form.comment}
-                                        onChange={handleForm} />
-                                        <Button
-                                                    variant="contained"
-                                                    onClick={submitForm}
-                                                    >
-                                                     ADD
-                                                    </Button>
-
-
-      </div>
-      
     )
 
 
-  }
-  
-  export default Show
+}
+
+export default Show

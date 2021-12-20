@@ -18,7 +18,7 @@ const Create = () => {
 
     setForm(prevState => ({
       ...prevState,
-      [e.target.name] : e.target.value
+      [e.target.name]: e.target.value
     }))
 
   }
@@ -33,26 +33,26 @@ const Create = () => {
         "Authorization": `Bearer ${token}`
       }
     })
-        .then(response => {
-          console.log(response.data)
-          navigate(`/restaurants/${response.data._id}`)
-        })
-        .catch(err => console.log(err))
+      .then(response => {
+        console.log(response.data)
+        navigate(`/restaurants/${response.data._id}`)
+      })
+      .catch(err => console.log(err))
   }
-  
-    return (
-      <div>
-        <h2>Create</h2>
 
-        <div className="form-group">
-          <TextField variant="filled" label="Title" name="title" onChange={handleForm} /> 
-        </div>
+  return (
+    <div>
+      <h2>Create</h2>
 
-        <div className="form-group">
-          <TextField multiline rows="4" variant="filled" label="Description" name="description" onChange={handleForm} />
-        </div>
+      <div className="form-group">
+        <TextField variant="filled" label="Title" name="title" onChange={handleForm} />
+      </div>
 
-        <div className="form-group">
+      <div className="form-group">
+        <TextField multiline rows="4" variant="filled" label="Description" name="description" onChange={handleForm} />
+      </div>
+
+      <div className="form-group">
         <FormControl variant="filled" fullWidth >
           <InputLabel id="city-select-label">City</InputLabel>
           <Select labelId="city-select-label" onChange={handleForm} label="City" name="city" >
@@ -63,8 +63,8 @@ const Create = () => {
             <MenuItem value="wexford">Wexford</MenuItem>
           </Select>
         </FormControl>
-        </div>
-        {/* <LocalizationProvider dateAdapter={AdapterMoment}>
+      </div>
+      {/* <LocalizationProvider dateAdapter={AdapterMoment}>
           <DateTimePicker
             renderInput={(props) => <TextField {...props} />}
             label="Start Date"
@@ -76,40 +76,40 @@ const Create = () => {
 
       <div className="form-group">
 
-  	  <TextField
-        id="datetime-local"
-        label="Start Date"
-        type="datetime-local"
-        variant="filled"
-        name="start_date"
-        onChange={handleForm}
-        // defaultValue="2017-05-24T10:30"
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-        </div>
-
-        <div className="form-group">
-
-  	  <TextField
-        id="datetime-local"
-        label="End Date"
-        type="datetime-local"
-        variant="filled"
-        name="end_date"
-        onChange={handleForm}
-        // defaultValue="2017-05-24T10:30"
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-        </div>
-
-        <Button onClick={submitForm} variant="contained">Submit</Button>
-        
+        <TextField
+          id="datetime-local"
+          label="Start Date"
+          type="datetime-local"
+          variant="filled"
+          name="start_date"
+          onChange={handleForm}
+          // defaultValue="2017-05-24T10:30"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
       </div>
-    )
-  }
-  
-  export default Create
+
+      <div className="form-group">
+
+        <TextField
+          id="datetime-local"
+          label="End Date"
+          type="datetime-local"
+          variant="filled"
+          name="end_date"
+          onChange={handleForm}
+          // defaultValue="2017-05-24T10:30"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </div>
+
+      <Button onClick={submitForm} variant="contained">Submit</Button>
+
+    </div>
+  )
+}
+
+export default Create

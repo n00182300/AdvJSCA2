@@ -1,47 +1,96 @@
-import { useParams } from 'react-router-dom'
-import axios from '../../config'
-import { useEffect, useState } from 'react'
-//import { Button } from '@mui/material';
-import { Link } from 'react-router-dom'
-// import CommentList from '../../components/CommentList'
+import axios from '../../config';
+import { useState, useEffect } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { TextField, MenuItem, FormControl, Select, InputLabel, Button } from '@mui/material';
+import { Grid, Container } from "@mui/material"
+import { Card, FormGroup, CardHeader, CardContent } from '@mui/material';
 
 const CommentEdit = () => {
-    let { id } = useParams()
-    const [restaurant, setRestaurant] = useState(null)
+  let navigate = useNavigate()
 
-    const [comments, setComments] = useState([])
+  let { id } = useParams()
 
-    let token = localStorage.getItem('token')
+  const [form, setForm] = useState({})
 
-    useEffect(() => {
-        axios.get(`/restaurants/${id}`, {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        })
-             .then(response => {
-                console.log(response.data)
-                setRestaurant(response.data)
-                setComments(response.data.restaurant.comments)
-                console.log(response.data.restaurant.comments)
-             })
-             .catch(err => {
-                console.log(`Error: ${err}`)
-             })
-    }, [id, token])
+  const [comment, setComment] = useState({})
 
-    if(!restaurant) return null
+  useEffect(() => {
+    setForm({
+      comment_id: id,
+      text: comment.text
+    })
+  }, [id])
 
 
-    
-    return (
-      <div>
-        <h2>This is the comment edit show page: {id}</h2>
-
-      </div>
-    )
-
-
+  const handleForm = e => {
+    setForm(prevState => ({
+      ...prevState,
+      [e.target.name]: e.target.value
+    }))
   }
-  
-  export default CommentEdit
+  const submitForm = () => {
+    console.log(form)
+    let token = localStorage.getItem('token')
+    axios.put(`/comments/update`, form, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        console.log(response.data)
+        navigate('/restaurants', { replace: true })
+      })
+      .catch(err => console.log(err))
+  }
+
+
+  //Delete
+  const submitDelete = () => {
+    console.log(form)
+    let token = localStorage.getItem('token')
+    axios.delete(`/comments/delete`, {
+      data: { comment_id: id },
+      headers: { "Authorization": `Bearer ${token}` }
+    })
+      .then(response => {
+        console.log(response.data)
+        navigate('/restaurants', { replace: true })
+      })
+      .catch(err => {
+        //console.log(err.stack)
+        //console.log(err.response)
+      })
+  }
+  return (
+    <div>
+      <Container >
+        <Grid conatiner >
+          <Grid item lg={4}>
+            <Card>
+              <CardHeader title="Update Comment" />
+              <CardContent>
+                <FormGroup>
+
+                  <TextField
+                    label="Update Comment"
+                    name="updated_comment"
+                    value={form.updated_comment}
+                    type="text"
+                    variant="outlined"
+                    onChange={handleForm} />
+                  <Button onClick={submitForm}>Submit</Button>
+                  <Button onClick={submitDelete}><Link to="/restaurants">Delete</Link></Button>
+
+                </FormGroup>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
+
+
+
+    </div>
+  )
+}
+export default CommentEdit;

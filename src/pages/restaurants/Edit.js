@@ -21,19 +21,19 @@ const Edit = () => {
   let token = localStorage.getItem('token')
 
   useEffect(() => {
-      axios.get(`http://localhost:8000/restaurants/${id}`, {
-          headers: {
-              "Authorization": `Bearer ${token}`
-          }
+    axios.get(`http://localhost:8000/restaurants/${id}`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        console.log(response.data)
+        setRestaurant(response.data)
+        setForm(response.data)
       })
-            .then(response => {
-              console.log(response.data)
-              setRestaurant(response.data)
-              //setForm(response.data)
-            })
-            .catch(err => {
-              console.log(`Error: ${err}`)
-            })
+      .catch(err => {
+        console.log(`Error: ${err}`)
+      })
   }, [id, token])
 
   //tells this use effect to run when [restaurant] has been modified. very powerful. "watcher" or restaurant variable
@@ -45,16 +45,16 @@ const Edit = () => {
       borough: restaurant.restaurant.borough
 
     })
-  },[restaurant]) //this takes care of the form(setting intital value)
+  }, [restaurant]) //this takes care of the form(setting intital value)
 
-  if(!restaurant) return null
+  if (!restaurant) return null
 
 
   const handleForm = e => {
 
     setForm(prevState => ({
       ...prevState,
-      [e.target.name] : e.target.value
+      [e.target.name]: e.target.value
     }))
 
   }
@@ -69,58 +69,58 @@ const Edit = () => {
         "Authorization": `Bearer ${token}`
       }
     })
-        .then(response => {
-          console.log(response.data)
-          navigate(`/restaurants/${response.data._id}`)
-        })
-        .catch(err => console.log(err))
+      .then(response => {
+        console.log(response.data)
+        navigate(`/restaurants/${response.data._id}`)
+      })
+      .catch(err => console.log(err))
   }
 
   //tiny component for loading
   const Loading = () => {
     return <div className="form-group">Loading . . .</div>
   }
-  
-    return (
-      <div>
-        <h2>Edit</h2>
 
-        {/* conditionally loading he text field. js -> jsx */}
-        {
-          form.name ? (<div className="form-group">
-                      <TextField variant="filled" label="Name" name="name" onChange={handleForm} value={form.name} InputLabelProps={{
-                      shrink: true,
-                     }} /> 
+  return (
+    <div>
+      <h2>Edit</h2>
+
+      {/* conditionally loading he text field. js -> jsx */}
+      {
+        form.name ? (<div className="form-group">
+          <TextField variant="filled" label="Name" name="name" onChange={handleForm} value={form.name} InputLabelProps={{
+            shrink: true,
+          }} />
         </div>
         ) : (<Loading />)
-        }
+      }
 
 
 
-        {/* <div className="form-group">
+      {/* <div className="form-group">
           <TextField multiline rows="4" variant="filled" label="Description" name="description" value={form.description} onChange={handleForm} InputLabelProps={{
           shrink: true,
         }} /> 
         </div> */}
 
-        {
-          form.borough ? (        
+      {
+        form.borough ? (
           <div className="form-group">
-          <FormControl variant="filled" fullWidth >
-            <InputLabel id="borough-select-label">City</InputLabel>
-            <Select labelId="borough-select-label" onChange={handleForm} label="Borough" name="borough" value={form.borough} >
-              <MenuItem value="dublin">Dublin</MenuItem>
-              <MenuItem value="cork">Cork</MenuItem>
-              <MenuItem value="galway">Galway</MenuItem>
-              <MenuItem value="mayo">Mayo</MenuItem>
-              <MenuItem value="wexford">Wexford</MenuItem>
-            </Select>
-          </FormControl>
+            <FormControl variant="filled" fullWidth >
+              <InputLabel id="borough-select-label">City</InputLabel>
+              <Select labelId="borough-select-label" onChange={handleForm} label="Borough" name="borough" value={form.borough} >
+                <MenuItem value="dublin">Dublin</MenuItem>
+                <MenuItem value="cork">Cork</MenuItem>
+                <MenuItem value="galway">Galway</MenuItem>
+                <MenuItem value="mayo">Mayo</MenuItem>
+                <MenuItem value="wexford">Wexford</MenuItem>
+              </Select>
+            </FormControl>
           </div>) : (<Loading />)
-        }
+      }
 
 
-        {/* <LocalizationProvider dateAdapter={AdapterMoment}>
+      {/* <LocalizationProvider dateAdapter={AdapterMoment}>
           <DateTimePicker
             renderInput={(props) => <TextField {...props} />}
             label="Start Date"
@@ -130,7 +130,7 @@ const Edit = () => {
         </LocalizationProvider> */}
 
 
-        {/* {
+      {/* {
           form.start_date ? (
             <div className="form-group">
 
@@ -176,10 +176,10 @@ const Edit = () => {
 
 
 
-        <Button onClick={submitForm} variant="contained">Submit</Button>
-        
-      </div>
-    )
-  }
-  
-  export default Edit
+      <Button onClick={submitForm} variant="contained">Submit</Button>
+
+    </div>
+  )
+}
+
+export default Edit

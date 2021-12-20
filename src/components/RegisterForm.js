@@ -4,9 +4,9 @@ import TextField from '@mui/material/TextField';
 import { Card, FormGroup, Button, CardHeader, CardContent } from '@mui/material';
 import { useNavigate,Link } from 'react-router-dom'
 
-const LoginForm = props => {
+const RegisterForm = props => {
 
-  const [form, setForm] = useState({ email: "cg@example.net", password: "secret123" })
+  const [form, setForm] = useState({ name:"",email: "", password: "" })
 
   let navigate = useNavigate()
 
@@ -22,7 +22,8 @@ const LoginForm = props => {
   const submitForm = () => {
     console.log(form)
 
-    axios.post('http://localhost:8000/users/login', {
+    axios.post('http://localhost:8000/users/register', {
+      name:form.name,
       email: form.email,
       password: form.password
     })
@@ -34,7 +35,6 @@ const LoginForm = props => {
       })
       .catch(err => console.log(err))
   }
-  
 
   let btnStyles = {
     backgroundColor: "yellow",
@@ -44,16 +44,17 @@ const LoginForm = props => {
   return (
     <>
       <Card>
-        <CardHeader title="Login" />
+        <CardHeader title="Register" />
         <CardContent>
           <FormGroup>
 
+          <TextField label="Name" variant="outlined" name="name" onChange={handleForm} />
+            <br />
             <TextField label="Email" variant="outlined" name="email" onChange={handleForm} />
             <br />
             <TextField label="Password" variant="outlined" type="password" name="password" onChange={handleForm} />
             <br />
-            <Button onClick={submitForm} variant="contained">Submit</Button>
-            <Button ><Link to="/register">Register</Link></Button>
+            <Button onClick={submitForm}><Link to="/">Submit</Link></Button>
             
 
           </FormGroup>
@@ -66,4 +67,4 @@ const LoginForm = props => {
   )
 }
 
-export default LoginForm
+export default RegisterForm

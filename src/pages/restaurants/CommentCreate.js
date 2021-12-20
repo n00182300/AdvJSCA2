@@ -9,18 +9,18 @@ import { useNavigate } from 'react-router-dom'
 
 
 const CommentCreate = () => {
-  let id = {useParams}
+  let id = { useParams }
 
   let navigate = useNavigate()
 
   const [form, setForm] = useState({})
-  
+
 
   const handleForm = e => {
 
     setForm(prevState => ({
       ...prevState,
-      [e.target.name] : e.target.value
+      [e.target.name]: e.target.value
     }))
 
   }
@@ -35,29 +35,29 @@ const CommentCreate = () => {
         "Authorization": `Bearer ${token}`
       }
     })
-        .then(response => {
-          console.log(response.data)
-          navigate(`/restaurants/${response.data._id}`)
-        })
-        .catch(err => console.log(err))
+      .then(response => {
+        console.log(response.data)
+        navigate(`/restaurants/${response.data._id}`)
+      })
+      .catch(err => console.log(err))
   }
-  
-    return (
-      <div>
-        <h2>Create</h2>
+
+  return (
+    <div>
+      <h2>Create</h2>
 
 
-        <div className="form-group">
-          <TextField multiline rows="4" variant="filled" label="Comment" name="comment" onChange={handleForm} />
-        </div>
-
-        <Button onClick={submitForm} variant="contained">Submit</Button>
-        
+      <div className="form-group">
+        <TextField multiline rows="4" variant="filled" label="Comment" name="comment" onChange={handleForm} />
       </div>
-    )
-  }
-  
-  export default CommentCreate
+
+      <Button onClick={submitForm} variant="contained">Submit</Button>
+
+    </div>
+  )
+}
+
+export default CommentCreate
 
   //Create Comment
   // const [form, setForm] = useState({})
